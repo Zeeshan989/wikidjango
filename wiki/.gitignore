@@ -1,0 +1,14 @@
+# Ignore virtual environment
+venv/
+
+# Ignore Django's migration files
+**/migrations/
+
+# Ignore local settings
+**/settings_local.py
+
+# Ignore log files
+**/*.log
+
+# Ignore database files
+*.sqlite3

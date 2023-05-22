@@ -1,0 +1,17 @@
+{% extends "encyclopedia/layout.html" %}
+
+{% block title %}
+    Encyclopedia
+{% endblock %}
+
+{% block body %}
+    <h1>Did you mean?</h1>
+
+    <ul>
+        {% for sub in search %}
+            <a href="{% url 'title' title=sub %}"><li>{{ sub }}</li></a>
+        {% endfor %}
+      
+    </ul>
+
+{% endblock %}
