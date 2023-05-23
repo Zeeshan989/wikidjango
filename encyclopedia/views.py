@@ -3,6 +3,12 @@ from django.http import HttpResponse
 from django.shortcuts import redirect
 import markdown
 import os
+from .forms import content
+import random
+from django.urls import reverse
+
+
+
 
 from . import util
 
@@ -49,15 +55,35 @@ def newpage(request):
             if title in util.list_entries():
                 return HttpResponse("This Title already exists !")
             else:
-                filename = f"{title}.md"
-                file_path = os.path.join("entries", filename)   # Replace "path/to/save" with your desired file directory
-                with open(file_path, "w") as file:
-                    file.write(desc)
+                util.save_entry(title,desc)
                 return redirect('index')
 
             
         else:
             return render(request, "encyclopedia/newpage.html")
+        
+
+def editpage(request,title):
+    tits = util.get_entry(title)
+    if request.method =='POST':
+        form = content(request.POST)
+        if form.is_valid():
+            new_content = form.cleaned_data['cont']
+            util.save_entry(title, new_content)
+            return redirect('index')     
+    else:
+        initial_data = {'cont':tits}
+        form = content(initial=initial_data)
+        return render(request, 'encyclopedia/editpage.html', {'form': form})
+    
+def randpage(request):
+    randomtitle=random.choice(util.list_entries())
+    url = reverse('title', kwargs={'title':randomtitle})
+    return redirect(url)
+       
+
+    
+
    
 
   
